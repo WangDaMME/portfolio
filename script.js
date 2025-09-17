@@ -573,10 +573,41 @@ function initVideoControls() {
         
         if (!video) return;
         
-        // Initialize video
+        // Initialize video with debug info
         video.addEventListener('loadedmetadata', function() {
-            durationSpan.textContent = formatTime(video.duration);
+            console.log('✅ Video metadata loaded:', {
+                src: this.src,
+                duration: this.duration,
+                videoWidth: this.videoWidth,
+                videoHeight: this.videoHeight,
+                readyState: this.readyState
+            });
+            if (durationSpan) {
+                durationSpan.textContent = formatTime(video.duration);
+            }
             video.muted = true; // Start muted for autoplay
+            
+            // Try to play the video
+            video.play().catch(e => {
+                console.log('Autoplay prevented, user interaction required:', e);
+            });
+        });
+        
+        // Add debug event listeners
+        video.addEventListener('loadstart', function() {
+            console.log('🔄 Video load started:', this.src);
+        });
+        
+        video.addEventListener('loadeddata', function() {
+            console.log('📊 Video data loaded:', this.src);
+        });
+        
+        video.addEventListener('canplay', function() {
+            console.log('▶️ Video can play:', this.src);
+        });
+        
+        video.addEventListener('canplaythrough', function() {
+            console.log('🎯 Video can play through:', this.src);
         });
         
         // Update progress bar
@@ -709,15 +740,48 @@ function formatTime(seconds) {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-// Enhanced video error handling
+// Enhanced video error handling and format detection
 function initVideoErrorHandling() {
     const videos = document.querySelectorAll('video');
     
     videos.forEach(video => {
+        // Check video format support
+        const sources = video.querySelectorAll('source');
+        let supportedSource = null;
+        
+        sources.forEach(source => {
+            const type = source.getAttribute('type');
+            if (video.canPlayType(type) !== '') {
+                supportedSource = source;
+            }
+        });
+        
+        // If no supported source found, try to load the first one anyway
+        if (!supportedSource && sources.length > 0) {
+            supportedSource = sources[0];
+        }
+        
         video.addEventListener('error', function(e) {
-            console.error('Video error:', e);
+            const error = this.error;
+            console.error('❌ Video error:', {
+                code: error ? error.code : 'unknown',
+                message: error ? error.message : 'unknown error',
+                src: this.src,
+                currentSrc: this.currentSrc,
+                networkState: this.networkState,
+                readyState: this.readyState
+            });
+            
             const container = this.closest('.video-container');
             if (container) {
+                // Try to reload the video
+                const currentSrc = this.currentSrc || this.src;
+                if (currentSrc) {
+                    console.log('🔄 Retrying video load:', currentSrc);
+                    this.load();
+                    return;
+                }
+                
                 container.innerHTML = `
                     <div style="
                         display: flex;
@@ -732,6 +796,15 @@ function initVideoErrorHandling() {
                         <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 20px; color: #ef4444;"></i>
                         <h3 style="margin-bottom: 10px;">视频加载失败</h3>
                         <p style="color: #94a3b8; margin-bottom: 20px;">无法播放此视频文件</p>
+                        <div style="margin-bottom: 20px;">
+                            <p style="color: #94a3b8; font-size: 0.9rem;">可能的原因：</p>
+                            <ul style="color: #94a3b8; font-size: 0.8rem; text-align: left;">
+                                <li>网络连接问题</li>
+                                <li>视频文件损坏</li>
+                                <li>浏览器缓存问题</li>
+                                <li>服务器配置问题</li>
+                            </ul>
+                        </div>
                         <button onclick="location.reload()" style="
                             background: #3b82f6;
                             color: white;
@@ -739,7 +812,16 @@ function initVideoErrorHandling() {
                             padding: 10px 20px;
                             border-radius: 5px;
                             cursor: pointer;
+                            margin-right: 10px;
                         ">重新加载</button>
+                        <button onclick="convertVideoFormat()" style="
+                            background: #10b981;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        ">转换格式</button>
                     </div>
                 `;
             }
@@ -758,9 +840,211 @@ function initVideoErrorHandling() {
                 container.classList.remove('loading');
             }
         });
+        
+        // Add format detection info
+        video.addEventListener('loadedmetadata', function() {
+            console.log('Video loaded:', this.currentSrc);
+            console.log('Video format:', this.videoWidth + 'x' + this.videoHeight);
+            console.log('Video duration:', this.duration + 's');
+        });
+    });
+}
+
+// Video format conversion helper
+function convertVideoFormat() {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            color: white;
+            text-align: center;
+        ">
+            <h3 style="margin-bottom: 20px;">视频格式转换指南</h3>
+            <div style="text-align: left; margin-bottom: 20px;">
+                <p style="margin-bottom: 10px;"><strong>方法1：在线转换</strong></p>
+                <ul style="margin-bottom: 15px; font-size: 0.9rem;">
+                    <li>CloudConvert.com</li>
+                    <li>Convertio.co</li>
+                    <li>Online-Convert.com</li>
+                </ul>
+                
+                <p style="margin-bottom: 10px;"><strong>方法2：本地转换</strong></p>
+                <ul style="margin-bottom: 15px; font-size: 0.9rem;">
+                    <li>使用FFmpeg命令行工具</li>
+                    <li>使用VLC媒体播放器</li>
+                    <li>使用HandBrake免费软件</li>
+                </ul>
+                
+                <p style="margin-bottom: 10px;"><strong>推荐设置：</strong></p>
+                <ul style="font-size: 0.9rem;">
+                    <li>格式：MP4 (H.264)</li>
+                    <li>分辨率：保持原始比例</li>
+                    <li>比特率：2-5 Mbps</li>
+                </ul>
+            </div>
+            <button onclick="this.closest('div').parentElement.remove()" style="
+                background: #3b82f6;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+            ">关闭</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+// Video format detection and browser support
+function checkVideoSupport() {
+    const video = document.createElement('video');
+    const formats = {
+        'mov': 'video/quicktime',
+        'mp4': 'video/mp4',
+        'webm': 'video/webm',
+        'ogg': 'video/ogg'
+    };
+    
+    console.log('🎥 浏览器视频格式支持检测:');
+    Object.keys(formats).forEach(format => {
+        const support = video.canPlayType(formats[format]);
+        console.log(`${format.toUpperCase()}: ${support || '不支持'}`);
+    });
+    
+    // Check if MP4 is supported
+    const mp4Support = video.canPlayType('video/mp4');
+    if (!mp4Support) {
+        console.warn('⚠️ MP4格式不被支持');
+        showFormatWarning();
+    } else {
+        console.log('✅ MP4格式支持良好');
+    }
+}
+
+// Show format warning
+function showFormatWarning() {
+    const warning = document.createElement('div');
+    warning.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #f59e0b;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 10000;
+        max-width: 300px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    `;
+    
+    warning.innerHTML = `
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+            <strong>视频格式提示</strong>
+        </div>
+        <p style="margin: 0; font-size: 0.9rem;">
+            MP4格式可能不被支持，请使用现代浏览器（Chrome、Firefox、Safari）。
+        </p>
+        <button onclick="this.parentElement.remove()" style="
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        ">知道了</button>
+    `;
+    
+    document.body.appendChild(warning);
+    
+    // Auto remove after 10 seconds
+    setTimeout(() => {
+        if (document.body.contains(warning)) {
+            warning.remove();
+        }
+    }, 10000);
+}
+
+// Test video file accessibility
+function testVideoFile() {
+    const videoSrc = 'assets/save vector store.mp4';
+    console.log('🧪 Testing video file accessibility:', videoSrc);
+    
+    // Test with fetch
+    fetch(videoSrc, { method: 'HEAD' })
+        .then(response => {
+            console.log('📡 Video file response:', {
+                status: response.status,
+                statusText: response.statusText,
+                headers: Object.fromEntries(response.headers.entries())
+            });
+            
+            if (response.ok) {
+                console.log('✅ Video file is accessible');
+            } else {
+                console.error('❌ Video file not accessible:', response.status);
+            }
+        })
+        .catch(error => {
+            console.error('❌ Video file fetch error:', error);
+        });
+    
+    // Test with video element
+    const testVideo = document.createElement('video');
+    testVideo.src = videoSrc;
+    testVideo.addEventListener('loadstart', () => console.log('🔄 Test video load started'));
+    testVideo.addEventListener('loadedmetadata', () => console.log('✅ Test video metadata loaded'));
+    testVideo.addEventListener('error', (e) => {
+        console.error('❌ Test video error:', testVideo.error);
+    });
+    testVideo.load();
+}
+
+// Simple video initialization for immediate playback
+function initSimpleVideo() {
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+        // Force load the video
+        video.load();
+        
+        // Add click to play functionality
+        video.addEventListener('click', function() {
+            if (this.paused) {
+                this.play().catch(e => console.log('Play failed:', e));
+            } else {
+                this.pause();
+            }
+        });
+        
+        // Ensure video is ready
+        video.addEventListener('canplay', function() {
+            console.log('🎥 Video ready to play:', this.src);
+        });
     });
 }
 
 // Initialize video controls and error handling
 initVideoControls();
 initVideoErrorHandling();
+checkVideoSupport();
+testVideoFile();
+initSimpleVideo();
