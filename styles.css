@@ -87,7 +87,8 @@ body {
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 3.2rem;
+    margin-left: -17%;
 }
 
 .nav-link {
@@ -96,6 +97,7 @@ body {
     font-weight: 500;
     transition: color 0.3s ease;
     position: relative;
+    letter-spacing: 0.1em;
 }
 
 .nav-link:hover {
