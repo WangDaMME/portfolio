@@ -172,7 +172,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 2rem;
+    padding: 2rem 2rem 2rem calc(2rem + 14vw);
     height: 100%;
     max-height: 100vh;
     overflow: hidden;
@@ -182,7 +182,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: 2rem calc(2rem + 4.7vw) 2rem 2rem;
     height: 100%;
     max-height: 100vh;
     overflow: hidden;
@@ -820,14 +820,14 @@ section {
     }
 
     .hero-content {
-        padding: 1rem;
+        padding: 1rem 1rem 1rem calc(1rem + 6.5vw);
         height: 50%;
         max-height: 50vh;
         order: 2;
     }
 
     .hero-visual {
-        padding: 1rem;
+        padding: 1rem calc(1rem + 3.1vw) 1rem 1rem;
         height: 50%;
         max-height: 50vh;
         order: 1;
