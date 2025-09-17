@@ -533,7 +533,7 @@ initKeyboardNavigation();
 
 // Lazy loading for images
 function initLazyLoading() {
-    const images = document.querySelectorAll('img[src]');
+    const images = document.querySelectorAll('img[src]:not(.profile-photo):not(.nav-profile-img)');
     
     const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
