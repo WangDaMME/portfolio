@@ -1048,3 +1048,87 @@ initVideoErrorHandling();
 checkVideoSupport();
 testVideoFile();
 initSimpleVideo();
+
+// Enhanced typing animation for hero title with loop
+function initHeroTypingAnimation() {
+    const heroTitle = document.querySelector('.hero-title');
+    if (!heroTitle) return;
+    
+    const displayText = "Hi, I'm Da WANG, a Software Engineer.";
+    const speed = 125; // Consistent speed for both typing and deleting
+    
+    let isTyping = true;
+    let i = 0;
+    
+    const typeWriter = () => {
+        if (isTyping) {
+            // Typing phase
+            if (i < displayText.length) {
+                // Create the text with proper highlighting and line breaks
+                let currentText = displayText.substring(0, i + 1);
+                
+                // Add line break after "Da WANG,"
+                if (currentText.includes('Da WANG,')) {
+                    currentText = currentText.replace('Da WANG,', '<span class="blue-highlight">Da WANG</span>,<br>');
+                } else {
+                    // Replace "Da WANG" with highlighted version
+                    currentText = currentText.replace('Da WANG', '<span class="blue-highlight">Da WANG</span>');
+                }
+                
+                heroTitle.innerHTML = currentText + '<span class="cursor">|</span>';
+                
+                // Check if we just completed "Da WANG"
+                if (displayText.charAt(i) === 'D' && displayText.charAt(i+1) === 'a') {
+                    i += 7; // Skip "Da WANG"
+                } else {
+                    i++;
+                }
+                setTimeout(typeWriter, speed);
+            } else {
+                // Typing complete, wait 3 seconds then start deleting
+                setTimeout(() => {
+                    isTyping = false;
+                    i = displayText.length;
+                    typeWriter();
+                }, 3000);
+            }
+        } else {
+            // Deleting phase
+            if (i > 0) {
+                // Create the text with proper highlighting and line breaks
+                let currentText = displayText.substring(0, i);
+                
+                // Add line break after "Da WANG,"
+                if (currentText.includes('Da WANG,')) {
+                    currentText = currentText.replace('Da WANG,', '<span class="blue-highlight">Da WANG</span>,<br>');
+                } else {
+                    // Replace "Da WANG" with highlighted version
+                    currentText = currentText.replace('Da WANG', '<span class="blue-highlight">Da WANG</span>');
+                }
+                
+                heroTitle.innerHTML = currentText + '<span class="cursor">|</span>';
+                
+                // Check if we're deleting "Da WANG"
+                if (i > 7 && displayText.substring(i-7, i) === 'Da WANG') {
+                    i -= 7; // Skip "Da WANG"
+                } else {
+                    i--;
+                }
+                setTimeout(typeWriter, speed); // Same speed as typing
+            } else {
+                // Deletion complete, restart typing
+                isTyping = true;
+                i = 0;
+                setTimeout(typeWriter, 500);
+            }
+        }
+    };
+    
+    // Start typing after a short delay
+    setTimeout(typeWriter, 500);
+}
+
+// Initialize hero typing animation
+document.addEventListener('DOMContentLoaded', function() {
+    initHeroTypingAnimation();
+});
