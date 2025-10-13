@@ -164,7 +164,7 @@
                                 <div class="carousel-slide active">
                                     <div class="video-container">
                                         <video controls autoplay muted loop playsinline preload="metadata">
-                                            <source src="assets/lost and found/Log Lost.mp4" type="video/mp4">
+                                            <source src="https://github.com/WangDaMME/portfolio/releases/download/v1.0-videos/Log.Lost.mp4" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
                                         <div class="video-title-badge">Log Lost</div>
@@ -195,10 +195,41 @@
                                 <div class="carousel-slide">
                                     <div class="video-container">
                                         <video controls autoplay muted loop playsinline preload="metadata">
-                                            <source src="assets/lost and found/Report Found2.mp4" type="video/mp4">
+                                            <source src="https://github.com/WangDaMME/portfolio/releases/download/v1.0-videos/Report.Found2.mp4" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
                                         <div class="video-title-badge">Report Found</div>
+                                        <div class="video-controls">
+                                            <button class="video-play-btn" onclick="togglePlay(this)">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                            <div class="video-progress">
+                                                <div class="video-progress-bar">
+                                                    <div class="video-progress-filled"></div>
+                                                </div>
+                                            </div>
+                                            <div class="video-time">
+                                                <span class="current-time">0:00</span>
+                                                <span class="duration">0:00</span>
+                                            </div>
+                                            <button class="video-volume-btn" onclick="toggleMute(this)">
+                                                <i class="fas fa-volume-up"></i>
+                                            </button>
+                                            <button class="video-fullscreen-btn" onclick="toggleFullscreen(this)">
+                                                <i class="fas fa-expand"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="media-type-badge">VIDEO</div>
+                                </div>
+                                <!-- Video 3: Retrieve Item -->
+                                <div class="carousel-slide">
+                                    <div class="video-container">
+                                        <video controls autoplay muted loop playsinline preload="metadata">
+                                            <source src="https://github.com/WangDaMME/portfolio/releases/download/v1.0-videos/Retrieve.Item.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="video-title-badge">Retrieve Item</div>
                                         <div class="video-controls">
                                             <button class="video-play-btn" onclick="togglePlay(this)">
                                                 <i class="fas fa-play"></i>
@@ -234,6 +265,7 @@
                             <div class="carousel-dots">
                                 <span class="dot active" onclick="currentSlide('project1', 1)"></span>
                                 <span class="dot" onclick="currentSlide('project1', 2)"></span>
+                                <span class="dot" onclick="currentSlide('project1', 3)"></span>
                             </div>
                         </div>
                     </div>
@@ -249,11 +281,14 @@
                             <span class="tech-tag">LangChain4j</span>
                         </div>
                         <div class="project-links">
-                            <a href="assets/lost and found/Log Lost.mp4" class="project-link" target="_blank">
+                            <a href="https://github.com/WangDaMME/portfolio/releases/download/v1.0-videos/Log.Lost.mp4" class="project-link" target="_blank">
                                 <i class="fas fa-video"></i> Log Lost Demo
                             </a>
-                            <a href="assets/lost and found/Report Found2.mp4" class="project-link" target="_blank">
+                            <a href="https://github.com/WangDaMME/portfolio/releases/download/v1.0-videos/Report.Found2.mp4" class="project-link" target="_blank">
                                 <i class="fas fa-video"></i> Report Found Demo
+                            </a>
+                            <a href="https://github.com/WangDaMME/portfolio/releases/download/v1.0-videos/Retrieve.Item.mp4" class="project-link" target="_blank">
+                                <i class="fas fa-video"></i> Retrieve Item Demo
                             </a>
                         </div>
                     </div>
