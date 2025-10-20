@@ -295,23 +295,19 @@
                     </div>
                 </div>
 
-                <!-- Project 2: AI-Powered Chatbot -->
+                <!-- Project 2: Spring AI- Medical Assistant -->
                 <div class="project-card">
                     <div class="project-media">
                         <div class="media-carousel" data-carousel="project2">
                             <div class="carousel-container">
-                                <!-- GIF Animation -->
+                                <!-- Video 1: Save To Vector Store -->
                                 <div class="carousel-slide active">
-                                    <img src="https://media.giphy.com/media/26n6WywJyh39n1pBu/giphy.gif" alt="AI Chatbot Demo">
-                                    <div class="media-type-badge">GIF</div>
-                                </div>
-                                <!-- Video Demo -->
-                                <div class="carousel-slide">
                                     <div class="video-container">
                                         <video controls muted loop playsinline preload="auto">
-                                            <source src="assets/save%20vector%20store.mp4" type="video/mp4">
+                                            <source src="assets/medical%20assistant/savetovectorstore.mov" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
+                                        <div class="video-title-badge">1. Save To Vector Store</div>
                                         <div class="video-controls">
                                             <button class="video-play-btn" onclick="togglePlay(this)">
                                                 <i class="fas fa-play"></i>
@@ -335,10 +331,67 @@
                                     </div>
                                     <div class="media-type-badge">VIDEO</div>
                                 </div>
-                                <!-- Static Image -->
+                                <!-- Video 2: Rag Search -->
                                 <div class="carousel-slide">
-                                    <img src="https://via.placeholder.com/600x400/1e40af/ffffff?text=Machine+Learning" alt="Machine Learning Dashboard">
-                                    <div class="media-type-badge">IMG</div>
+                                    <div class="video-container">
+                                        <video controls muted loop playsinline preload="auto">
+                                            <source src="assets/medical%20assistant/ragsearch.mp4" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="video-title-badge">2. Rag Search</div>
+                                        <div class="video-controls">
+                                            <button class="video-play-btn" onclick="togglePlay(this)">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                            <div class="video-progress">
+                                                <div class="video-progress-bar">
+                                                    <div class="video-progress-filled"></div>
+                                                </div>
+                                            </div>
+                                            <div class="video-time">
+                                                <span class="current-time">0:00</span>
+                                                <span class="duration">0:00</span>
+                                            </div>
+                                            <button class="video-volume-btn" onclick="toggleMute(this)">
+                                                <i class="fas fa-volume-up"></i>
+                                            </button>
+                                            <button class="video-fullscreen-btn" onclick="toggleFullscreen(this)">
+                                                <i class="fas fa-expand"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="media-type-badge">VIDEO</div>
+                                </div>
+                                <!-- Video 3: SearXNG -->
+                                <div class="carousel-slide">
+                                    <div class="video-container">
+                                        <video controls muted loop playsinline preload="auto">
+                                            <source src="assets/medical%20assistant/searxng.mov" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="video-title-badge">3. SearXNG</div>
+                                        <div class="video-controls">
+                                            <button class="video-play-btn" onclick="togglePlay(this)">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                            <div class="video-progress">
+                                                <div class="video-progress-bar">
+                                                    <div class="video-progress-filled"></div>
+                                                </div>
+                                            </div>
+                                            <div class="video-time">
+                                                <span class="current-time">0:00</span>
+                                                <span class="duration">0:00</span>
+                                            </div>
+                                            <button class="video-volume-btn" onclick="toggleMute(this)">
+                                                <i class="fas fa-volume-up"></i>
+                                            </button>
+                                            <button class="video-fullscreen-btn" onclick="toggleFullscreen(this)">
+                                                <i class="fas fa-expand"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="media-type-badge">VIDEO</div>
                                 </div>
                             </div>
                             <div class="carousel-controls">
@@ -357,21 +410,39 @@
                         </div>
                     </div>
                     <div class="project-content">
-                        <h3>AI-Powered Chatbot</h3>
-                        <p>An intelligent chatbot using natural language processing and machine learning. Provides customer support automation with sentiment analysis and context awareness.</p>
+                        <h3>Spring AI- Medical Assistant</h3>
+                        <p><strong>Project Summary:</strong><br>
+                        This is a comprehensive AI-powered medical assistance platform built with Spring AI framework, implementing a Model Context Protocol (MCP) architecture. The system consists of two main modules: <strong>mcp-client</strong> (Port 7070) and <strong>mcp-server</strong> (Port 9060), working together to provide intelligent conversational AI capabilities with advanced features including RAG (Retrieval Augmented Generation) for document-based Q&A using Redis vector store, real-time internet search via SearXNG integration, MCP tool system for date/time utilities, email sending, and product management with MySQL database, streaming responses via Server-Sent Events (SSE), multi-model support with OpenAI GPT integration, and comprehensive document processing using Apache Tika.</p>
+                        <p><strong>Tech Summary:</strong><br>
+                        <strong>Backend:</strong> Spring Boot 3.5.3, Spring AI 1.0.0, Java 21<br>
+                        <strong>AI & Vector Store:</strong> Spring AI OpenAI Starter, Spring AI Vector Store Redis, Spring AI Transformers<br>
+                        <strong>MCP Protocol:</strong> Spring AI MCP Client/Server WebFlux, SSE for async communication<br>
+                        <strong>Database:</strong> MySQL 8.0.33 (MyBatis-Plus 3.5.10.1), Redis 5.x (Vector Store & Caching)<br>
+                        <strong>Document Processing:</strong> Apache Tika Document Reader, Custom Text Splitter<br>
+                        <strong>Web & HTTP:</strong> Spring Web (REST APIs), OkHttp 4.12.0, CORS Configuration<br>
+                        <strong>Email:</strong> Spring Mail (Gmail SMTP), FlexMark 0.64.8 (Markdown to HTML)<br>
+                        <strong>Utilities:</strong> Lombok, Hutool 5.8.30, Apache Commons Lang3 3.17.0, Dotenv Java 3.2.0<br>
+                        <strong>AOP & Logging:</strong> Spring AOP, SLF4J<br>
+                        <strong>External Integrations:</strong> SearXNG Search Engine, OpenAI API</p>
                         <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">Spring Boot</span>
+                            <span class="tech-tag">Spring AI</span>
+                            <span class="tech-tag">Java 21</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">Redis</span>
                             <span class="tech-tag">OpenAI API</span>
-                            <span class="tech-tag">FastAPI</span>
-                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">Apache Tika</span>
+                            <span class="tech-tag">SSE</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" class="project-link">
-                                <i class="fab fa-github"></i> GitHub
+                            <a href="assets/medical%20assistant/savetovectorstore.mov" class="project-link" target="_blank">
+                                <i class="fas fa-video"></i> Save To Vector Store Demo
                             </a>
-                            <a href="#" class="project-link">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            <a href="assets/medical%20assistant/ragsearch.mp4" class="project-link" target="_blank">
+                                <i class="fas fa-video"></i> Rag Search Demo
+                            </a>
+                            <a href="assets/medical%20assistant/searxng.mov" class="project-link" target="_blank">
+                                <i class="fas fa-video"></i> SearXNG Demo
                             </a>
                         </div>
                     </div>
